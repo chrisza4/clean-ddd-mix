@@ -2,14 +2,13 @@ package chrisza.course.cleanmixddd.purchase.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
 import chrisza.course.cleanmixddd.purchase.persistance.PurchaseRequestRepository;
 
@@ -29,5 +28,17 @@ public class PurchaseRequestServiceTest {
         assertEquals(expectedNewPurchaseRequestId, purchaseRequestId);
 
         verify(mockRepo).AddAndGetId(purchaseRequest);
+    }
+
+    @Test
+    public void ShouldNotSaveInvalidPurchaseRequest() {
+        var mockRepo = mock(PurchaseRequestRepository.class);
+        var purchaseRequest = Fixtures.getNoApproverPurchaseRequest();
+        when(mockRepo.AddAndGetId(purchaseRequest)).thenThrow(new AssertionError("Should not be called"));
+
+        var service = new PurchaseRequestService(mockRepo);
+        var result = service.AddNewPurchaseRequest(purchaseRequest);
+        assertEquals(0, result);
+        verify(mockRepo, never()).AddAndGetId(purchaseRequest);
     }
 }

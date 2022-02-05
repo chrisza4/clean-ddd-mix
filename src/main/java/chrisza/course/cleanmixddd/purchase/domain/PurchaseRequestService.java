@@ -10,6 +10,9 @@ public class PurchaseRequestService {
     }
 
     public int AddNewPurchaseRequest(PurchaseRequest purchaseRequest) {
+        if (!purchaseRequest.validate().isValid()) {
+            return 0;
+        }
         return this.repository.AddAndGetId(purchaseRequest);
     }
 }
