@@ -33,11 +33,19 @@ public class PurchaseRequest {
 
     public ValidationResult validate() {
         var errors = new ArrayList<String>();
-        if (approver.getLevel() == PermissionLevel.Employee) {
-            errors.add("Normal employee can't be an approver of a purchase request");
+        if (approver == null) {
+            errors.add("Purchase request must have an approver");
         }
-        if (owner.getLevel() == PermissionLevel.Manager && approver.getLevel() != PermissionLevel.CEO) {
-            errors.add("A manager must ask for approval from CEO only");
+        if (owner == null) {
+            errors.add("Purchase request must have an owner");
+        }
+        if (approver != null && owner != null) {
+            if (approver.getLevel() == PermissionLevel.Employee) {
+                errors.add("Normal employee can't be an approver of a purchase request");
+            }
+            if (owner.getLevel() == PermissionLevel.Manager && approver.getLevel() != PermissionLevel.CEO) {
+                errors.add("A manager must ask for approval from CEO only");
+            }
         }
         return new ValidationResult(errors);
     }

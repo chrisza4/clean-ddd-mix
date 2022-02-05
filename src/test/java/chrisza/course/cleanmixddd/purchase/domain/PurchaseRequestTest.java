@@ -1,5 +1,6 @@
 package chrisza.course.cleanmixddd.purchase.domain;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -52,5 +53,33 @@ public class PurchaseRequestTest {
         var purchaseRequest = new PurchaseRequest(approver, purchaseRequestItems, requester);
 
         assertFalse(purchaseRequest.validate().isValid());
+    }
+
+    @Test
+    void testIsValidReturnInvalidWhenNoApprover() {
+        var product1 = new Product(1, "Macbook");
+        var product2 = new Product(2, "AirPods");
+        var item1 = new PurchaseRequestLine(product1, 3);
+        var item2 = new PurchaseRequestLine(product2, 4);
+        var purchaseRequestItems = List.of(item1, item2);
+        var requester = new User(2, "Chris", PermissionLevel.Manager);
+
+        var purchaseRequest = new PurchaseRequest(null, purchaseRequestItems, requester);
+        assertFalse(purchaseRequest.validate().isValid());
+        assertEquals("Purchase request must have an approver", purchaseRequest.validate().getErrorMessages().get(0));
+    }
+
+    @Test
+    void testIsValidReturnInvalidWhenNoOwner() {
+        var product1 = new Product(1, "Macbook");
+        var product2 = new Product(2, "AirPods");
+        var item1 = new PurchaseRequestLine(product1, 3);
+        var item2 = new PurchaseRequestLine(product2, 4);
+        var purchaseRequestItems = List.of(item1, item2);
+        var approver = new User(2, "Chris", PermissionLevel.Manager);
+
+        var purchaseRequest = new PurchaseRequest(approver, purchaseRequestItems, null);
+        assertFalse(purchaseRequest.validate().isValid());
+        assertEquals("Purchase request must have an owner", purchaseRequest.validate().getErrorMessages().get(0));
     }
 }
