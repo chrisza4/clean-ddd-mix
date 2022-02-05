@@ -5,6 +5,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -15,8 +17,10 @@ public class PurchaseRequestServiceTest {
     @Test
     public void ShouldSaveNewPurchaseRequest() {
         var mockRepo = mock(PurchaseRequestRepository.class);
-        var purchaseRequest = new PurchaseRequest();
         var expectedNewPurchaseRequestId = 1;
+        var approver = new User(1, "Chris", PermissionLevel.CEO);
+        var requester = new User(2, "Erikk", PermissionLevel.Employee);
+        var purchaseRequest = new PurchaseRequest(approver, new ArrayList<PurchaseRequestLine>(), requester);
         when(mockRepo.AddAndGetId(purchaseRequest)).thenReturn(expectedNewPurchaseRequestId);
 
         var service = new PurchaseRequestService(mockRepo);
