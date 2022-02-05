@@ -1,6 +1,5 @@
 package chrisza.course.cleanmixddd.purchase.web.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import chrisza.course.cleanmixddd.purchase.web.requests.*;
@@ -9,8 +8,12 @@ import chrisza.course.cleanmixddd.purchase.web.requests.*;
 public class PurchaseRequestController {
 
     @PostMapping("/pr")
-    public PurchaseRequest greeting(@RequestBody PurchaseRequest model) {
+    public PurchaseRequest create(@RequestBody PurchaseRequest model) {
         return model;
     }
 
+    @PostMapping("/pr")
+    public PurchaseRequest approve(@RequestBody PurchaseRequest model) {
+        return model;
+    }
 }
