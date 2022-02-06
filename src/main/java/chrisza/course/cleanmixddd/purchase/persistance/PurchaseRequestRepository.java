@@ -20,10 +20,11 @@ public class PurchaseRequestRepository {
         return purchaseRequests.get(id);
     }
 
-    public void edit(int id, PurchaseRequest newPurchaseRequest) throws NotFoundException {
+    public PurchaseRequest edit(int id, PurchaseRequest newPurchaseRequest) throws NotFoundException {
         if (id >= purchaseRequests.size()) {
             throw new NotFoundException();
         }
         purchaseRequests.set(id, newPurchaseRequest);
+        return newPurchaseRequest;
     }
 }

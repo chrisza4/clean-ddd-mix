@@ -2,6 +2,7 @@ package chrisza.course.cleanmixddd.purchase.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -10,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
 import chrisza.course.cleanmixddd.purchase.persistance.PurchaseRequestRepository;
 
@@ -43,5 +45,30 @@ public class PurchaseRequestServiceTest {
         var result = service.AddNewPurchaseRequest(purchaseRequest);
         assertNull(result);
         verify(mockRepo, never()).Add(purchaseRequest);
+    }
+
+    @Test
+    public void ShouldBeAbleToApprovePurchaseRequestById() throws NotFoundException, UnapprovableException {
+        var mockRepo = mock(PurchaseRequestRepository.class);
+        var purchaseRequestId = 1;
+        var purchaseRequest = Fixtures.getNormalPurchaseRequest();
+        when(mockRepo.getById(purchaseRequestId)).thenReturn(purchaseRequest);
+        when(mockRepo.edit(purchaseRequestId, purchaseRequest)).thenReturn(purchaseRequest);
+
+        var service = new PurchaseRequestService(mockRepo);
+        var result = service.Approve(purchaseRequestId);
+        assertEquals(purchaseRequest, result);
+        verify(mockRepo).edit(purchaseRequestId, purchaseRequest);
+    }
+
+    @Test
+    public void ShouldThrowNotFoundIfIdDoesnotExists() {
+        var mockRepo = mock(PurchaseRequestRepository.class);
+        var purchaseRequestId = 1;
+        when(mockRepo.getById(purchaseRequestId)).thenThrow(new IndexOutOfBoundsException());
+
+        var service = new PurchaseRequestService(mockRepo);
+        assertThrows(NotFoundException.class, () -> service.Approve(purchaseRequestId));
+
     }
 }
