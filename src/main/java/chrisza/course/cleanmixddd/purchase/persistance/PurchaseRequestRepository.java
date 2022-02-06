@@ -9,9 +9,11 @@ import chrisza.course.cleanmixddd.purchase.domain.PurchaseRequest;
 public class PurchaseRequestRepository {
     private static ArrayList<PurchaseRequest> purchaseRequests;
 
-    public int AddAndGetId(PurchaseRequest purchaseRequest) {
+    public PurchaseRequest Add(PurchaseRequest purchaseRequest) {
         purchaseRequests.add(purchaseRequest);
-        return purchaseRequests.size() - 1;
+        var id = purchaseRequests.size() - 1;
+        purchaseRequest.setId(id);
+        return purchaseRequest;
     }
 
     public PurchaseRequest getById(int id) {

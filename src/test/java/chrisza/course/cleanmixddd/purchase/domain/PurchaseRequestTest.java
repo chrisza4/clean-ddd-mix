@@ -2,9 +2,9 @@ package chrisza.course.cleanmixddd.purchase.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -12,23 +12,15 @@ import org.junit.jupiter.api.Test;
 public class PurchaseRequestTest {
     @Test
     void testIsValidReturnTrueForValidPurchaseRequest() {
-        var product1 = new Product(1, "Macbook");
-        var product2 = new Product(2, "AirPods");
-        var item1 = new PurchaseRequestLine(product1, 3);
-        var item2 = new PurchaseRequestLine(product2, 4);
-        var purchaseRequestItems = List.of(item1, item2);
-        var approver = new User(1, "Chris", PermissionLevel.CEO);
-        var requester = new User(2, "Erikk", PermissionLevel.Employee);
-
-        var purchaseRequest = new PurchaseRequest(approver, purchaseRequestItems, requester);
+        var purchaseRequest = Fixtures.getNormalPurchaseRequest();
 
         assertTrue(purchaseRequest.validate().isValid());
     }
 
     @Test
     void testIsValidReturnInvalidWhenEmployeeIsApprover() {
-        var product1 = new Product(1, "Macbook");
-        var product2 = new Product(2, "AirPods");
+        var product1 = Fixtures.getMacbook();
+        var product2 = Fixtures.getAirPods();
         var item1 = new PurchaseRequestLine(product1, 3);
         var item2 = new PurchaseRequestLine(product2, 4);
         var purchaseRequestItems = List.of(item1, item2);
@@ -42,8 +34,8 @@ public class PurchaseRequestTest {
 
     @Test
     void testIsValidReturnInvalidWhenManagerAskForManagerApproval() {
-        var product1 = new Product(1, "Macbook");
-        var product2 = new Product(2, "AirPods");
+        var product1 = Fixtures.getMacbook();
+        var product2 = Fixtures.getAirPods();
         var item1 = new PurchaseRequestLine(product1, 3);
         var item2 = new PurchaseRequestLine(product2, 4);
         var purchaseRequestItems = List.of(item1, item2);
@@ -57,8 +49,8 @@ public class PurchaseRequestTest {
 
     @Test
     void testIsValidReturnInvalidWhenNoApprover() {
-        var product1 = new Product(1, "Macbook");
-        var product2 = new Product(2, "AirPods");
+        var product1 = Fixtures.getMacbook();
+        var product2 = Fixtures.getAirPods();
         var item1 = new PurchaseRequestLine(product1, 3);
         var item2 = new PurchaseRequestLine(product2, 4);
         var purchaseRequestItems = List.of(item1, item2);
@@ -71,8 +63,8 @@ public class PurchaseRequestTest {
 
     @Test
     void testIsValidReturnInvalidWhenNoOwner() {
-        var product1 = new Product(1, "Macbook");
-        var product2 = new Product(2, "AirPods");
+        var product1 = Fixtures.getMacbook();
+        var product2 = Fixtures.getAirPods();
         var item1 = new PurchaseRequestLine(product1, 3);
         var item2 = new PurchaseRequestLine(product2, 4);
         var purchaseRequestItems = List.of(item1, item2);
@@ -81,5 +73,22 @@ public class PurchaseRequestTest {
         var purchaseRequest = new PurchaseRequest(approver, purchaseRequestItems, null);
         assertFalse(purchaseRequest.validate().isValid());
         assertEquals("Purchase request must have an owner", purchaseRequest.validate().getErrorMessages().get(0));
+    }
+
+    @Test
+    void testCanApprove() {
+        var purchaseRequest = Fixtures.getNormalPurchaseRequest();
+        try {
+            purchaseRequest.Approve();
+            assertEquals(PurchaseRequestStatus.Approved, purchaseRequest.getStatus());
+        } catch (UnapprovableException e) {
+            throw new AssertionError("Should approved");
+        }
+    }
+
+    @Test
+    void testCannotApproveIfAmountExceeds100000AndNotCEOAsApprover() {
+        var purchaseRequest = Fixtures.getUnapproveablePurchaseRequest();
+        assertThrows(UnapprovableException.class, () -> purchaseRequest.Approve());
     }
 }

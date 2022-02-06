@@ -9,10 +9,14 @@ public class PurchaseRequestService {
         this.repository = repository;
     }
 
-    public int AddNewPurchaseRequest(PurchaseRequest purchaseRequest) {
+    public PurchaseRequest AddNewPurchaseRequest(PurchaseRequest purchaseRequest) {
         if (!purchaseRequest.validate().isValid()) {
-            return 0;
+            return null;
         }
-        return this.repository.AddAndGetId(purchaseRequest);
+        return this.repository.Add(purchaseRequest);
+    }
+
+    public PurchaseRequest Approve(int id) {
+        throw new UnsupportedOperationException();
     }
 }

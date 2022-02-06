@@ -2,18 +2,39 @@ package chrisza.course.cleanmixddd.purchase.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 
 import chrisza.course.cleanmixddd.purchase.domain.helpers.*;
 
 public class PurchaseRequest {
+    private OptionalInt id;
     private final User approver;
     private final User owner;
     private final List<PurchaseRequestLine> items;
+    private PurchaseRequestStatus status;
 
     public PurchaseRequest(User approver, List<PurchaseRequestLine> items, User owner) {
+        this.id = OptionalInt.empty();
         this.items = items;
         this.approver = approver;
         this.owner = owner;
+    }
+
+    public PurchaseRequestStatus getStatus() {
+        return status;
+    }
+
+    public PurchaseRequest(int id, User approver, List<PurchaseRequestLine> items, User owner) {
+        this(approver, items, owner);
+        this.id = OptionalInt.of(id);
+    }
+
+    public OptionalInt getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = OptionalInt.of(id);
     }
 
     public User getApprover() {
@@ -48,5 +69,16 @@ public class PurchaseRequest {
             }
         }
         return new ValidationResult(errors);
+    }
+
+    public void Approve() throws UnapprovableException {
+        var totalAmount = 0;
+        for (var item : this.items) {
+            totalAmount += item.getQuantity() * item.getProduct().getPrice();
+        }
+        if (totalAmount > 100000 && approver.getLevel() != PermissionLevel.CEO) {
+            throw new UnapprovableException();
+        }
+        this.status = PurchaseRequestStatus.Approved;
     }
 }

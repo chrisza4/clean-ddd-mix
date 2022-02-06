@@ -1,6 +1,7 @@
 package chrisza.course.cleanmixddd.purchase.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -21,24 +22,26 @@ public class PurchaseRequestServiceTest {
         var approver = new User(1, "Chris", PermissionLevel.CEO);
         var requester = new User(2, "Erikk", PermissionLevel.Employee);
         var purchaseRequest = new PurchaseRequest(approver, new ArrayList<PurchaseRequestLine>(), requester);
-        when(mockRepo.AddAndGetId(purchaseRequest)).thenReturn(expectedNewPurchaseRequestId);
+        var addedPurchaseRequest = new PurchaseRequest(expectedNewPurchaseRequestId, approver,
+                new ArrayList<PurchaseRequestLine>(), requester);
+        when(mockRepo.Add(purchaseRequest)).thenReturn(addedPurchaseRequest);
 
         var service = new PurchaseRequestService(mockRepo);
-        var purchaseRequestId = service.AddNewPurchaseRequest(purchaseRequest);
-        assertEquals(expectedNewPurchaseRequestId, purchaseRequestId);
+        var newPurchaseRequest = service.AddNewPurchaseRequest(purchaseRequest);
+        assertEquals(expectedNewPurchaseRequestId, newPurchaseRequest.getId().getAsInt());
 
-        verify(mockRepo).AddAndGetId(purchaseRequest);
+        verify(mockRepo).Add(purchaseRequest);
     }
 
     @Test
     public void ShouldNotSaveInvalidPurchaseRequest() {
         var mockRepo = mock(PurchaseRequestRepository.class);
         var purchaseRequest = Fixtures.getNoApproverPurchaseRequest();
-        when(mockRepo.AddAndGetId(purchaseRequest)).thenThrow(new AssertionError("Should not be called"));
+        when(mockRepo.Add(purchaseRequest)).thenThrow(new AssertionError("Should not be called"));
 
         var service = new PurchaseRequestService(mockRepo);
         var result = service.AddNewPurchaseRequest(purchaseRequest);
-        assertEquals(0, result);
-        verify(mockRepo, never()).AddAndGetId(purchaseRequest);
+        assertNull(result);
+        verify(mockRepo, never()).Add(purchaseRequest);
     }
 }
