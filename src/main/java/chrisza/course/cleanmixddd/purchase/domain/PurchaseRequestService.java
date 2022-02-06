@@ -26,6 +26,13 @@ public class PurchaseRequestService {
         } catch (IndexOutOfBoundsException e) {
             throw new NotFoundException();
         }
+    }
 
+    public PurchaseRequest getById(int id) throws NotFoundException {
+        try {
+            return repository.getById(id);
+        } catch (IndexOutOfBoundsException e) {
+            throw new NotFoundException();
+        }
     }
 }

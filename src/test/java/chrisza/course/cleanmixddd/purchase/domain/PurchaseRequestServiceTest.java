@@ -85,4 +85,27 @@ public class PurchaseRequestServiceTest {
         assertThrows(NotFoundException.class, () -> service.Approve(purchaseRequestId));
 
     }
+
+    @Test
+    public void ShouldBeAbleToRequestPrById() throws NotFoundException {
+        var mockRepo = mock(PurchaseRequestRepository.class);
+        var purchaseRequestId = 1;
+        var purchaseRequest = Fixtures.getUnapproveablePurchaseRequest();
+        when(mockRepo.getById(purchaseRequestId)).thenReturn(purchaseRequest);
+
+        var service = new PurchaseRequestService(mockRepo);
+        assertEquals(purchaseRequest, service.getById(purchaseRequestId));
+
+    }
+
+    @Test
+    public void ShouldThrowNotFoundExceptionIfCannotGetPurchaseRequest() {
+        var mockRepo = mock(PurchaseRequestRepository.class);
+        var purchaseRequestId = 1;
+        when(mockRepo.getById(purchaseRequestId)).thenThrow(new IndexOutOfBoundsException());
+
+        var service = new PurchaseRequestService(mockRepo);
+        assertThrows(NotFoundException.class, () -> service.getById(purchaseRequestId));
+
+    }
 }
