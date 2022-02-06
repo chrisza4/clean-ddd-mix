@@ -58,7 +58,21 @@ public class PurchaseRequestServiceTest {
         var service = new PurchaseRequestService(mockRepo);
         var result = service.Approve(purchaseRequestId);
         assertEquals(purchaseRequest, result);
+        assertEquals(PurchaseRequestStatus.Approved, result.getStatus());
         verify(mockRepo).edit(purchaseRequestId, purchaseRequest);
+    }
+
+    @Test
+    public void ShouldThrowAndNotSaveIfUnappovable() throws NotFoundException, UnapprovableException {
+        var mockRepo = mock(PurchaseRequestRepository.class);
+        var purchaseRequestId = 1;
+        var purchaseRequest = Fixtures.getUnapproveablePurchaseRequest();
+        when(mockRepo.getById(purchaseRequestId)).thenReturn(purchaseRequest);
+        when(mockRepo.edit(purchaseRequestId, purchaseRequest)).thenReturn(purchaseRequest);
+
+        var service = new PurchaseRequestService(mockRepo);
+        assertThrows(UnapprovableException.class, () -> service.Approve(purchaseRequestId));
+        verify(mockRepo, never()).edit(purchaseRequestId, purchaseRequest);
     }
 
     @Test
