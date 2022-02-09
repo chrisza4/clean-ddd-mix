@@ -16,8 +16,8 @@ public class PurchaseRequestController {
         return service.AddNewPurchaseRequest(model);
     }
 
-    @PostMapping("/pr")
-    public PurchaseRequest approve(int id) throws UnapprovableException, ChangeSetPersister.NotFoundException {
+    @PostMapping("/pr/{id}/approve")
+    public PurchaseRequest approve(@PathVariable int id) throws UnapprovableException, ChangeSetPersister.NotFoundException {
         var service = DependencyResolver.getService();
         return service.Approve(id);
     }
