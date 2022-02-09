@@ -21,6 +21,7 @@ public class PurchaseRequest {
         this.items = items;
         this.approver = approver;
         this.owner = owner;
+        this.status = PurchaseRequestStatus.Ready;
     }
 
     public PurchaseRequestStatus getStatus() {

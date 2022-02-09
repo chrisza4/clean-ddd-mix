@@ -41,6 +41,7 @@ public class PurchaseRequestServiceTest {
         var newPurchaseRequest = service.AddNewPurchaseRequest(newPurchaseRequestInfo);
         assertTrue(newPurchaseRequest.getId().isPresent());
         assertEquals(expectedNewPurchaseRequestId, newPurchaseRequest.getId().getAsInt());
+        assertEquals(PurchaseRequestStatus.Ready, newPurchaseRequest.getStatus());
 
         verify(mockRepo).Add(any());
     }
