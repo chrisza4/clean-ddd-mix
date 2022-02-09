@@ -1,13 +1,12 @@
 package chrisza.course.cleanmixddd.purchase.domain;
 
+import chrisza.course.cleanmixddd.purchase.persistance.PurchaseRequestRepositoryImpl;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
-import chrisza.course.cleanmixddd.purchase.persistance.PurchaseRequestRepository;
-
 public class PurchaseRequestService {
-    private PurchaseRequestRepository repository;
+    private PurchaseRequestRepositoryImpl repository;
 
-    public PurchaseRequestService(PurchaseRequestRepository repository) {
+    public PurchaseRequestService(PurchaseRequestRepositoryImpl repository) {
         this.repository = repository;
     }
 
