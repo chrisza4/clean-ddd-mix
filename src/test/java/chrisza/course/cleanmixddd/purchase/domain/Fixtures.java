@@ -1,5 +1,11 @@
 package chrisza.course.cleanmixddd.purchase.domain;
 
+import chrisza.course.cleanmixddd.purchase.domain.entities.Product;
+import chrisza.course.cleanmixddd.purchase.domain.entities.PurchaseRequest;
+import chrisza.course.cleanmixddd.purchase.domain.entities.PurchaseRequestLine;
+import chrisza.course.cleanmixddd.purchase.domain.entities.User;
+import chrisza.course.cleanmixddd.purchase.domain.valueobjects.PermissionLevel;
+
 import java.util.List;
 
 public class Fixtures {

@@ -7,6 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
+import chrisza.course.cleanmixddd.purchase.domain.entities.PurchaseRequest;
+import chrisza.course.cleanmixddd.purchase.domain.entities.PurchaseRequestLine;
+import chrisza.course.cleanmixddd.purchase.domain.entities.User;
+import chrisza.course.cleanmixddd.purchase.domain.exceptions.UnapprovableException;
+import chrisza.course.cleanmixddd.purchase.domain.valueobjects.PermissionLevel;
+import chrisza.course.cleanmixddd.purchase.domain.valueobjects.PurchaseRequestStatus;
 import org.junit.jupiter.api.Test;
 
 public class PurchaseRequestTest {

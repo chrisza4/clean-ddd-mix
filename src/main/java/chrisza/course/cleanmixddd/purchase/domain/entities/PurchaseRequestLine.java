@@ -1,4 +1,4 @@
-package chrisza.course.cleanmixddd.purchase.domain;
+package chrisza.course.cleanmixddd.purchase.domain.entities;
 
 public class PurchaseRequestLine {
     private Product product;

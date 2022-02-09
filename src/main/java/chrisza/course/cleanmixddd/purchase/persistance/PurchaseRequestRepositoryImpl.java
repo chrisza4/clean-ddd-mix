@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import chrisza.course.cleanmixddd.purchase.domain.dependencies.PurchaseRequestRepository;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
-import chrisza.course.cleanmixddd.purchase.domain.PurchaseRequest;
+import chrisza.course.cleanmixddd.purchase.domain.entities.PurchaseRequest;
 
 public class PurchaseRequestRepositoryImpl implements PurchaseRequestRepository {
     private static ArrayList<PurchaseRequest> purchaseRequests;

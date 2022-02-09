@@ -1,4 +1,4 @@
-package chrisza.course.cleanmixddd.purchase.domain;
+package chrisza.course.cleanmixddd.purchase.domain.entities;
 
 public class Product {
     private final int id;

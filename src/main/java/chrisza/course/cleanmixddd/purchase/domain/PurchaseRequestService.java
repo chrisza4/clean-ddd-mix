@@ -1,5 +1,7 @@
 package chrisza.course.cleanmixddd.purchase.domain;
 
+import chrisza.course.cleanmixddd.purchase.domain.entities.PurchaseRequest;
+import chrisza.course.cleanmixddd.purchase.domain.exceptions.UnapprovableException;
 import chrisza.course.cleanmixddd.purchase.persistance.PurchaseRequestRepositoryImpl;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 

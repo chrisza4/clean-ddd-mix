@@ -1,9 +1,12 @@
-package chrisza.course.cleanmixddd.purchase.domain;
+package chrisza.course.cleanmixddd.purchase.domain.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 
+import chrisza.course.cleanmixddd.purchase.domain.valueobjects.PermissionLevel;
+import chrisza.course.cleanmixddd.purchase.domain.valueobjects.PurchaseRequestStatus;
+import chrisza.course.cleanmixddd.purchase.domain.exceptions.UnapprovableException;
 import chrisza.course.cleanmixddd.purchase.domain.helpers.*;
 
 public class PurchaseRequest {

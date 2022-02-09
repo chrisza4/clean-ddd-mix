@@ -1,4 +1,4 @@
-package chrisza.course.cleanmixddd.purchase.domain;
+package chrisza.course.cleanmixddd.purchase.domain.valueobjects;
 
 public enum PermissionLevel {
     Manager,

@@ -8,6 +8,11 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
+import chrisza.course.cleanmixddd.purchase.domain.entities.PurchaseRequest;
+import chrisza.course.cleanmixddd.purchase.domain.entities.User;
+import chrisza.course.cleanmixddd.purchase.domain.exceptions.UnapprovableException;
+import chrisza.course.cleanmixddd.purchase.domain.valueobjects.PermissionLevel;
+import chrisza.course.cleanmixddd.purchase.domain.valueobjects.PurchaseRequestStatus;
 import chrisza.course.cleanmixddd.purchase.persistance.PurchaseRequestRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;

@@ -1,4 +1,6 @@
-package chrisza.course.cleanmixddd.purchase.domain;
+package chrisza.course.cleanmixddd.purchase.domain.entities;
+
+import chrisza.course.cleanmixddd.purchase.domain.valueobjects.PermissionLevel;
 
 public class User {
     private long id;
