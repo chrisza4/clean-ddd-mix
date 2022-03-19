@@ -7,8 +7,6 @@ import chrisza.course.cleanmixddd.purchase.domain.exceptions.UnapprovableExcepti
 import chrisza.course.cleanmixddd.purchase.domain.valueobjects.NewPurchaseRequest;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
-import javax.naming.OperationNotSupportedException;
-
 public class PurchaseRequestService {
     private PurchaseRequestRepository purchaseRequestRepository;
     private UserRepository userRepository;
